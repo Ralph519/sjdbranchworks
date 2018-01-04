@@ -1,0 +1,49 @@
+@extends('layouts.app')
+
+@section('headtitle')
+  <a class="navbar-brand" href="\"> Dashboard </a>
+@endsection
+
+@section('content')
+<div class="content">
+    <div class="container-fluid">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-8">
+              <h3 class="title text-center">Page Subcategories</h3>
+              <br />
+              <div class="nav-center">
+                  <ul class="nav nav-pills nav-pills-warning nav-pills-icons" role="tablist">
+                      <!--
+          color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
+          -->
+                      <li>
+                          <a href="#description-1" role="tab" data-toggle="tab">
+                              <i class="material-icons">info</i> Description
+                          </a>
+                      </li>
+                      <li class="active">
+                          <a href="#schedule-1" role="tab" data-toggle="tab">
+                              <i class="material-icons">location_on</i> Location
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#tasks-1" role="tab" data-toggle="tab">
+                              <i class="material-icons">gavel</i> Legal Info
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#tasks-2" role="tab" data-toggle="tab">
+                              <i class="material-icons">help_outline</i> Help Center
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+</div>
+
+@endsection

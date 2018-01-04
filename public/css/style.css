@@ -1,0 +1,182 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  margin: 0;
+}
+
+#loginshowcase{
+  background-image: url('../imgs/beachsand.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  opacity: 0.9;
+}
+
+.btn-app {
+    border-radius: 3px;
+    position: relative;
+    padding: 15px 5px;
+    margin: 0 0 10px 10px;
+    min-width: 80px;
+    height: 60px;
+    text-align: center;
+    color: #666;
+    border: 1px solid #ddd;
+    background-color: #f4f4f4;
+    font-size: 12px;
+}
+
+.btn {
+    border-radius: 4px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+/* Menu Icons Circle*/
+.icon a, .icon i {
+    font-size: 40px;
+    line-height: 111px;
+    color: #999;
+    z-index: -1;
+}
+
+.iconhead {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.choice{
+  text-align: center;
+  vertical-align: middle;
+}
+
+.iconmain
+ {
+    text-align: center;
+    vertical-align: middle;
+    height: 116px;
+    width: 116px;
+    border-radius: 50%;
+    color: #999;
+    margin: 0 auto 20px;
+    border: 4px solid #ccc;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+}
+
+.iconmain:hover
+ {
+  color: #e91e63;
+  border-color: #e91e63;
+}
+
+.iconmaindisabled
+ {
+    text-align: center;
+    vertical-align: middle;
+    height: 116px;
+    width: 116px;
+    border-radius: 50%;
+    color: #999;
+    margin: 0 auto 20px;
+    border: 4px solid #ccc;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+}
+
+/* Menu Icons Circle*/
+
+/* Menu Icons Square*/
+.iconSq a, .iconSq i {
+    font-size: 30px;
+    line-height: 80px;
+    color: #999;
+    z-index: -1;
+}
+
+.iconSqhead {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.choiceSq{
+  text-align: center;
+  vertical-align: middle;
+}
+
+.iconSqmain
+ {
+    text-align: center;
+    vertical-align: middle;
+    height: 80px;
+    width: 80px;
+    border-radius: 10%;
+    color: #999;
+    margin: 0 auto 10px;
+    border: 4px solid #ccc;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+}
+
+.iconSqmain:hover
+ {
+  color: #e91e63;
+  border-color: #e91e63;
+}
+
+.iconSqmaindisabled
+ {
+    text-align: center;
+    vertical-align: middle;
+    height: 80px;
+    width: 80px;
+    border-radius: 10%;
+    color: #999;
+    margin: 0 auto 20px;
+    border: 4px solid #ccc;
+    transition: all .2s;
+    -webkit-transition: all .2s;
+}
+
+/* Menu Icons Square*/
+
+/* Invoice */
+
+.invoice-header
+{
+  margin: 40px 20px 20px 20px;
+  font-size: 20px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #eee;
+}
+
+.invoice-info
+{
+  margin: 10px 10px 10px 20px;
+}
+/* End Invoice */
+
+/* employee data table default hidden */
+#employeedata, #userdata{
+  display: none;
+}
+
+/* Notification  */
+
+.img-circle
+{
+  margin: auto 10px auto -15px;
+  width: 40px;
+  height: 40px;
+}
+
+.notifitem
+{
+  font-size: 10px;
+  padding-bottom: 0px;
+}
+
+/* [End] Notification */
