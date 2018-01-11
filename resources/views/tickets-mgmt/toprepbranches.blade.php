@@ -57,7 +57,7 @@
                             @else
                               <td><a href="{{ route('ticket-management.show', ['id' => $repbranch->id]) }}">{{$repbranch->s_brnccode.$repbranch->s_trannmbr}}</a></td>
                             @endif
-                            <td>{{$repbranch->branch->first()->s_brncname}}</td>
+                            <td>{{$repbranch->s_brnccode.' - '.$repbranch->branch->first()->s_brncname}}</td>
                             <td>{{$repbranch->issuesubject}}</td>
                             <td>{{$repbranch->ticketissues->first()->issuetype_desc}}</td>
                             <td>

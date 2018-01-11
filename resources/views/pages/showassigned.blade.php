@@ -12,7 +12,7 @@
         <div class="col-md-12">
           <div class="cardsmall">
             <div class="cardsmall-header cardsmall-header-icon" data-background-color="purple">
-              <i class="material-icons">assignment</i>
+              <i class="material-icons">event_busy</i>
             </div>
 
             <div id="opendiv" class="cardsmall-content">
@@ -78,7 +78,7 @@
         <div class="col-md-12">
           <div class="cardsmall">
             <div class="cardsmall-header cardsmall-header-icon" data-background-color="purple">
-              <i class="material-icons">assignment</i>
+              <i class="material-icons">event_available</i>
             </div>
 
             <div id="closeddiv" class="cardsmall-content">

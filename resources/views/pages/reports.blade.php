@@ -71,6 +71,28 @@
                <i class="material-icons">assignment</i>
            </div>
            <div class="cardsmall-content">
+             <h4 class="cardsmall-title">Support Ratings</h4>
+
+             <div class="row">
+
+               <div class="box-footer no-padding">
+                   <ul class="nav nav-stacked">
+
+                       <li><a href="{{ route('avgratings') }}"><i class="fa fa-dot-circle-o"></i> &nbsp;&nbsp;Average ratings received</a></li>
+
+                   </ul>
+                 </div>
+
+               </div>
+
+         </div>
+       </div>
+
+       <div class="cardsmall">
+           <div class="cardsmall-header cardsmall-header-icon" data-background-color="purple">
+               <i class="material-icons">assignment</i>
+           </div>
+           <div class="cardsmall-content">
              <h4 class="cardsmall-title">Other Reports</h4>
 
              <div class="row">

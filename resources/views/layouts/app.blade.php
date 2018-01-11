@@ -22,10 +22,15 @@
     <!--     Fonts and icons     -->
     <link href="{{ asset("/css/fonts.css")}}" rel="stylesheet" type='text/css'>
     <link href="{{ asset("/css/materialdesignicons.css")}}" rel="stylesheet" type='text/css'>
-    <!-- <script src="{{ asset("/css/sweetalert.min.css")}}"></script> -->
+
     <link href="{{ asset("/css/sweetalert.css")}}" rel="stylesheet" />
     <script src="{{ asset("/js/sweetalert.min.js")}}"></script>
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/css/star-rating.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-star-rating/4.0.2/js/star-rating.min.js"></script>
 </head>
 
 <body>

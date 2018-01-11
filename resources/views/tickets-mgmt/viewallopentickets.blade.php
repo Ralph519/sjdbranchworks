@@ -46,11 +46,11 @@
                         <tr>
                             <td>{{$openticket->id}}</td>
                             <td><a href="{{ route('ticket-management.edit', ['id' => $openticket->id]) }}">{{$openticket->s_brnccode.$openticket->s_trannmbr}}</a></td>
-                            <td>{{$openticket->branch->implode('s_brncname')}}</td>
+                            <td>{{$openticket->s_brnccode.' - '.$openticket->branch->implode('s_brncname')}}</td>
                             <td>{{$openticket->issuesubject}}</td>
                             <td>{{$openticket->ticketissues->first()->issuetype_desc}}</td>
-                            <td>{{$openticket->s_assignto}}</td>
-                            <td>{{ $openticket->s_reportby }}</td>
+                            <td>{{$openticket->user->name}}</td>
+                            <td>{{ $openticket->reportby->name }}</td>
                             <td>{{ $openticket->created_at }}</td>
                         </tr>
                         @endforeach
@@ -67,32 +67,6 @@
 @section('pagescripts')
 <link href="{{ asset("/css/jquery.dataTables.css")}}" rel="stylesheet" />
 <script src="{{ asset("/js/jquery.datatables.js")}}"></script>
-
-<script>
-    document.querySelector('#deleteuser').addEventListener('submit', function(e) {
-        var form = this;
-        e.preventDefault();
-        swal({
-              title: "Are you sure?",
-              text: "Employee information will be permanently deleted",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: '#DD6B55',
-              confirmButtonText: 'Yes, I am sure!',
-              cancelButtonText: "No, cancel it!",
-              closeOnConfirm: true,
-              closeOnCancel: false,
-          },
-          function(isConfirm) {
-              if (isConfirm) {
-                form.submit();
-              } else {
-                  swal("Cancelled", "", "error");
-              }
-          });
-    });
-
-</script>
 
 <script>
 $(document).ready(function() {

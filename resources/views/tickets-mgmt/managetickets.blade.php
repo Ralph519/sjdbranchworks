@@ -12,7 +12,7 @@
         <div class="col-md-12">
           <div class="cardsmall">
             <div class="cardsmall-header cardsmall-header-icon" data-background-color="purple">
-              <i class="material-icons">assignment</i>
+              <i class="material-icons">folder_shared</i>
             </div>
 
             <div id="opendiv" class="cardsmall-content">
@@ -52,7 +52,7 @@
                     @foreach($assigntickets as $assignticket)
                         <tr>
                             <td>{{$assignticket->s_brnccode.$assignticket->s_trannmbr}}</td>
-                            <td>{{$assignticket->branch->implode('s_brncname')}}</td>
+                            <td>{{$assignticket->s_brnccode.' - '.$assignticket->branch->implode('s_brncname')}}</td>
                             <td>{{$assignticket->issuesubject}}</td>
                             <td>{{$assignticket->ticketissues->first()->issuetype_desc}}</td>
                             <td>{{ $assignticket->s_reportby }}</td>
@@ -84,7 +84,7 @@
         <div class="col-md-12">
           <div class="cardsmall">
             <div class="cardsmall-header cardsmall-header-icon" data-background-color="purple">
-              <i class="material-icons">assignment</i>
+              <i class="material-icons">event_note</i>
             </div>
 
             <div id="closeddiv" class="cardsmall-content">

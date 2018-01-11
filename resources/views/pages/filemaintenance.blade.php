@@ -30,7 +30,7 @@
                           <div class="icon">
                             <a href="{{ route('issuetypes-management.create')}}" class="fa fa-phone  iconmain"></a>
                           </div>
-                          <h6 class="iconhead">Issues Reported</h6>
+                          <h6 class="iconhead">Issue Types</h6>
                         </div>
                       </div>
 

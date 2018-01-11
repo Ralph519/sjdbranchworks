@@ -53,7 +53,7 @@
                         <tr>
                             <td>{{$allticket->id}}</td>
                             <td><a href="{{ route('ticket-management.edit', ['id' => $allticket->id]) }}">{{$allticket->s_brnccode.$allticket->s_trannmbr}}</a></td>
-                            <td>{{$allticket->branch->first()->s_brncname}}</td>
+                            <td>{{$allticket->s_brnccode.' - '.$allticket->branch->first()->s_brncname}}</td>
                             <td>{{$allticket->issuesubject}}</td>
                             <td>{{$allticket->ticketissues->first()->issuetype_desc}}</td>
                             <td>

@@ -107,27 +107,24 @@
                             </div>
                           </div>
 
-                          @if(Auth::user()->isadmin=='Y')
-                            <div class="row">
-                              <div class="col-md-5">
-                                <div class="form-group label-floating">
-                                  <label for="usertype" class="control-label">Assign To</label>
-                                  <select class="form-control" name="assignto">
-                                    <option value=""></option>
-                                    @foreach($supports as $support)
-                                        <option value="{{ $support->username}}">{{$support->name}}</option>
-                                    @endforeach
-                                  </select>
-                                </div>
+                          <div class="row">
+                            <div class="col-md-6 pull-left">
+                              <div class="form-group label-floating">
+                                <label for="usertype" class="control-label">Assign To</label>
+                                <select class="form-control" name="assignto" id="assignto">
+                                  <option value=""></option>
+                                  @foreach($supports as $support)
+                                      <option value="{{$support->loginname}}">{{$support->name}}</option>
+                                  @endforeach
+                                </select>
                               </div>
                             </div>
-                          @endif
 
-
-                          <div class="row">
+                            <div class="col-md-6 pull-right">
                               <button type="submit" class="btn btn-primary pull-right">Create New Ticket</button>
                               <div class="clearfix"></div>
                               {{csrf_field()}}
+                            </div>
                           </div>
                         </form>
                   </div>

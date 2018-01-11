@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use willvincent\Rateable\Rateable;
 
 class ticket extends Model
 {
@@ -20,5 +21,17 @@ class ticket extends Model
     {
       return $this->hasOne('App\user','loginname','s_assignto');
     }
+
+    public function reportby()
+    {
+      return $this->hasOne('App\user','loginname','s_reportby');
+    }
+
+    public function rating()
+    {
+      return $this->hasOne('App\rating','rateable_id','id');
+    }
+
+    use Rateable;
 
 }

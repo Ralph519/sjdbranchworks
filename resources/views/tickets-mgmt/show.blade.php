@@ -73,13 +73,13 @@
                   <div class="col-xs-6">
                     <p class="lead">Reported By :</p>
                     <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                      {{$tickets->s_reportby}}
+                      {{$tickets->reportby->name}}
                     </p>
                   </div>
                   <div class="col-xs-6">
                     <p class="lead">Resolved By :</p>
                     <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                      {{$tickets->s_assignto}}
+                      {{$tickets->user->name}}
                     </p>
                   </div>
                 </div>

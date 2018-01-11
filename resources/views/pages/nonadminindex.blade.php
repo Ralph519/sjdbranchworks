@@ -107,7 +107,7 @@
                     @foreach($closedtickets10 as $closedticket10)
                         <tr>
                             <td>{{$closedticket10->id}}</td>
-                            <td><a href="{{ route('ticket-management.edit', ['id' => $closedticket10->id]) }}">{{$closedticket10->s_brnccode.$closedticket10->s_trannmbr}}</a></td>
+                            <td><a href="{{ route('ticket-management.show', ['id' => $closedticket10->id]) }}">{{$closedticket10->s_brnccode.$closedticket10->s_trannmbr}}</a></td>
                             <td>{{$closedticket10->branch->implode('s_brncname')}}</td>
                             <td>{{$closedticket10->issuesubject}}</td>
                             <td>{{$closedticket10->ticketissues->first()->issuetype_desc}}</td>
@@ -131,24 +131,44 @@
       </div>
       <br>
 @endif
-      <div class="row">
-        <div class="col-md-12">
 
-        	<div class="col-md-12" id="post-data">
-            <div class="card card-plain">
-            	<div class="card-content">
+      @if(count($createdtickets))
+        <div class="row">
+          <div class="col-md-12">
 
-            		<ul class="timeline">
-		                @include('data')
-                </ul>
+          	<div class="col-md-12" id="post-data">
+              <div class="card card-plain">
+              	<div class="card-content">
 
-              </div>
-          	</div>
+              		<ul class="timeline">
+  		                @include('data')
+                  </ul>
+
+                </div>
+            	</div>
+            </div>
+
           </div>
-
         </div>
-      </div>
+      @else
+        <div class="row">
+          <div class="col-md-12">
 
+            <div class="col-md-12" id="post-data">
+              <div class="card card-plain">
+                <div class="card-content">
+
+                  <ul class="timeline">
+                    @include('datablank')
+                  </ul>
+
+                </div>
+            	</div>
+            </div>
+
+          </div>
+        </div>
+      @endif
 
 
   </div>
@@ -222,5 +242,18 @@ $(document).ready(function()
 	              alert('server not responding...');
 	        });
 	}
+</script>
+
+<script>
+$(function() {
+    $('#ratingsModal').on('show.bs.modal', function(e){
+      $("#ticketid").val($(e.relatedTarget).data('id'));
+      $("#assignto").val($(e.relatedTarget).data('assignto'));
+      $("#modalTicketno").html($(e.relatedTarget).data('ticketno'));
+      $("#modalSubject").html($(e.relatedTarget).data('subject'));
+      $("#modalAssignedTo").html($(e.relatedTarget).data('assigntoname'));
+      // $("#input-1").rating();
+    });
+  });
 </script>
 @endsection

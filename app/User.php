@@ -39,6 +39,11 @@ class User extends Authenticatable
 
     public function ticket()
     {
-      return $this->belongsTo('App\ticket');
+      return $this->belongsTo('App\ticket', 's_assignto');
+    }
+
+    public function reportbyname()
+    {
+      return $this-belongsTo('App\ticket', 's_reportby');
     }
 }

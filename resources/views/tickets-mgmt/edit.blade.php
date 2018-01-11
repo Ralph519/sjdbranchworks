@@ -121,9 +121,18 @@
                           </div>
 
                           <div class="row">
+                            <div class="col-md-6 pull-left">
+                              <div class="form-group label-floating">
+                                  <label for="reportby" class="control-label">Reported By</label>
+                                  <input type="text" class="form-control" value="{{ $tickets->reportby->name}}" id="reportby" name="reportby" disabled>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6 pull-right">
                               <button type="submit" class="btn btn-primary pull-right">Close Ticket</button>
                               <div class="clearfix"></div>
                               {{csrf_field()}}
+                            </div>
                           </div>
                         </form>
                   </div>

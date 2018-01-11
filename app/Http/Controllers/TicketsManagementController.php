@@ -41,7 +41,7 @@ class TicketsManagementController extends Controller
      */
     public function create()
     {
-      $branches = Branch::all();
+      $branches = Branch::orderBy('s_brnccode')->get();
 
       $users = User::all();
 
@@ -100,6 +100,9 @@ class TicketsManagementController extends Controller
       $ticket->m_issuedesc = $request->input('ticketdesc');
       $ticket->s_assignto = $request->input('assignto');
 
+      $tIssue = issuetype::find($request->input('issuereported'));
+      $ticketissue = $tIssue->issuetype_desc;
+
       $ticket->save();
 
       $ticketid = $ticket->id;
@@ -117,16 +120,6 @@ class TicketsManagementController extends Controller
                         ['empstatus','=','A']
                         ])->get();
 
-      // $ticketid = 1;
-
-      switch($request->input('issuereported')) {
-          case '1':
-              $ticketissue = 'Aircon';
-              break;
-          case '2':
-              $ticketissue = 'General Services';
-              break;
-      }
 
       switch($request->input('priority')) {
           case 1:
@@ -323,6 +316,9 @@ class TicketsManagementController extends Controller
       $reportbyname = $ticket->s_reportby;
       $ticketid = $ticket->id;
 
+      $tIssue = issuetype::find($ticket->issuetype);
+      $ticketissue = $tIssue->issuetype_desc;
+
       $ticket->save();
 
       $tickethistory = new tickethistories;
@@ -335,15 +331,6 @@ class TicketsManagementController extends Controller
       $reportby = user::where([
                     ['loginname','=',$reportbyname]
                     ])->get();
-
-      switch($ticket->issuetype) {
-        case '1':
-            $ticketissue = 'Aircon';
-            break;
-        case '2':
-            $ticketissue = 'General Services';
-            break;
-      }
 
       switch($ticket->s_priority) {
           case 1:
@@ -374,9 +361,6 @@ class TicketsManagementController extends Controller
         }
        }
 
-
-
-      // flash()->overlay('Ticket have been closed', 'Resolve Ticket');
       Alert::success('Ticket have been closed');
       return redirect()->intended('/');
     }
@@ -513,6 +497,25 @@ class TicketsManagementController extends Controller
       $AlertMessage = 'Ticket have been assigned to ' . $assignedto;
       Alert::success($AlertMessage);
       return redirect()->intended('ticket-management/managetickets');
+    }
+
+    public function saveRatings(Request $request)
+    {
+        request()->validate(['rate' => 'required']);
+
+        $ticket = ticket::find($request->ticketid);
+
+        $rating = new \willvincent\Rateable\Rating;
+
+        $rating->rating = $request->rate;
+
+        $rating->user_id = auth()->user()->id;
+        $rating->s_assignto = $request->assignto;
+
+        $ticket->ratings()->save($rating);
+
+        Alert::success('Your ratings have been submitted');
+        return redirect()->intended('/');
     }
 
     public function notificationview($ticketid)

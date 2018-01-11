@@ -117,7 +117,6 @@ class ReportsController extends Controller
                                         	INNER JOIN branches on tickets.s_brnccode = branches.s_brnccode
                                         	LEFT OUTER JOIN users ON tickets.s_assignto = users.loginname
                                         WHERE tickets.created_at between :datefrom and :datethru
-                                        	AND issuetype = :issuetype
                                         ORDER BY tickets.s_brnccode;"), array('datefrom' => $date1, 'datethru' => $date2, 'issuetype' => $s_issuetype));
           $reptitle = 'Total Tickets with ';
           break;
@@ -158,26 +157,28 @@ class ReportsController extends Controller
     $date1 = substr($repdatefrom,6,4).substr($repdatefrom,0,2).substr($repdatefrom,3,2);
     $date2 = substr($repdatethru,6,4).substr($repdatethru,0,2).substr($repdatethru,3,2);
 
-    // $repdata = DB::select('call bybranchissuerep(?,?)',array($date1,$date2));
+    $repdata = DB::select('call bybranchissuerep(?,?)',array($date1,$date2));
 
     $issuetypes = issuetype::all();
 
-    $repdata = DB::select(DB::raw("select tickets.s_brnccode, branches.s_brncname, count(*) as totalcnt,
-                                      sum(case when issuetype = 1 and s_statusxx = 'C' then 1 else 0 end) as issuetype1_rslv,
-                                      sum(case when issuetype = 1 and s_statusxx = 'P' then 1 else 0 end) as issuetype1_open,
-                                      sum(case when issuetype = 2 and s_statusxx = 'C' then 1 else 0 end) as issuetype2_rslv,
-                                      sum(case when issuetype = 2 and s_statusxx = 'P' then 1 else 0 end) as issuetype2_open,
-                                      sum(case when issuetype = 3 and s_statusxx = 'C' then 1 else 0 end) as issuetype3_rslv,
-                                      sum(case when issuetype = 3 and s_statusxx = 'P' then 1 else 0 end) as issuetype3_open,
-                                      sum(case when issuetype = 4 and s_statusxx = 'C' then 1 else 0 end) as issuetype4_rslv,
-                                      sum(case when issuetype = 4 and s_statusxx = 'P' then 1 else 0 end) as issuetype4_open
-                                  FROM tickets
-                                  	INNER JOIN branches ON tickets.s_brnccode = branches.s_brnccode
-                                      WHERE tickets.created_at between :datefrom and :datethru
-                                  GROUP BY tickets.s_brnccode, branches.s_brncname;
-                                      "), array('datefrom' => $date1, 'datethru' => $date2));
+    $repTypeDesc = " Per Branch ";
 
-    return view('reports.summaryByBranchIssueRep', compact('repdata', 'issuetypes', 'repdatefrom', 'repdatethru'));
+    // $repdata = DB::select(DB::raw("select tickets.s_brnccode, branches.s_brncname, count(*) as totalcnt,
+    //                                   sum(case when issuetype = 1 and s_statusxx = 'C' then 1 else 0 end) as issuetype1_rslv,
+    //                                   sum(case when issuetype = 1 and s_statusxx = 'P' then 1 else 0 end) as issuetype1_open,
+    //                                   sum(case when issuetype = 2 and s_statusxx = 'C' then 1 else 0 end) as issuetype2_rslv,
+    //                                   sum(case when issuetype = 2 and s_statusxx = 'P' then 1 else 0 end) as issuetype2_open,
+    //                                   sum(case when issuetype = 3 and s_statusxx = 'C' then 1 else 0 end) as issuetype3_rslv,
+    //                                   sum(case when issuetype = 3 and s_statusxx = 'P' then 1 else 0 end) as issuetype3_open,
+    //                                   sum(case when issuetype = 4 and s_statusxx = 'C' then 1 else 0 end) as issuetype4_rslv,
+    //                                   sum(case when issuetype = 4 and s_statusxx = 'P' then 1 else 0 end) as issuetype4_open
+    //                               FROM tickets
+    //                               	INNER JOIN branches ON tickets.s_brnccode = branches.s_brnccode
+    //                                   WHERE tickets.created_at between :datefrom and :datethru
+    //                               GROUP BY tickets.s_brnccode, branches.s_brncname;
+    //                                   "), array('datefrom' => $date1, 'datethru' => $date2));
+
+    return view('reports.summaryByBranchIssueRep', compact('repdata', 'issuetypes', 'repdatefrom', 'repdatethru', 'repTypeDesc'));
 
   }
 
@@ -191,6 +192,8 @@ class ReportsController extends Controller
     $repdatefrom = $date1;
     $repdatethru = $date2;
 
+    $repTypeDesc = " Per Branch ";
+
     switch ($reptype){
       case 1:
         $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -201,6 +204,7 @@ class ReportsController extends Controller
                                     WHERE tickets.created_at between :datefrom and :datethru
                                     AND tickets.s_brnccode = :brnccode;"),
                                     array('datefrom' => $date1, 'datethru' => $date2, 'brnccode' => $s_brnccode));
+        $reptitle = 'Total Tickets of ' . $s_brncname;
         break;
       case 2:
           $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -213,6 +217,7 @@ class ReportsController extends Controller
                                     AND tickets.s_statusxx = 'C'
                                     AND tickets.issuetype = :issuetype;"),
                                     array('datefrom' => $date1, 'datethru' => $date2, 'brnccode' => $s_brnccode, 'issuetype' => $s_issuetype));
+          $reptitle = 'Closed Tickets of ' . $s_brncname;
           break;
         case 3:
             $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -225,9 +230,10 @@ class ReportsController extends Controller
                                       AND tickets.s_statusxx = 'P'
                                       AND tickets.issuetype = :issuetype;"),
                                       array('datefrom' => $date1, 'datethru' => $date2, 'brnccode' => $s_brnccode, 'issuetype' => $s_issuetype));
+            $reptitle = 'Open Tickets with ' . $s_brncname;
             break;
     }
-    return view('reports/summaryByBranchDetail',compact('repdata', 's_brncname','repdatefrom','repdatethru'));
+    return view('reports/summaryByReportWithIssueRepDetail',compact('repdata', 's_brncname','repdatefrom','repdatethru','reptitle', 'repTypeDesc'));
   }
 
   // COUNT BY ASSIGNED TO
@@ -304,26 +310,33 @@ class ReportsController extends Controller
     $repdatefrom = $request->input('datefrom');
     $repdatethru = $request->input('datethru');
 
-    $date1 = Carbon::parse($request->input('datefrom'));
-    $date2 = Carbon::parse($request->input('datethru'));
+    // $date1 = Carbon::parse($request->input('datefrom'));
+    // $date2 = Carbon::parse($request->input('datethru'));
 
-    $repdata = DB::select(DB::raw("select s_assignto, name, count(*) as totalcnt,
-                                      sum(case when issuetype = 1 and s_statusxx = 'C' then 1 else 0 end) as issuetype1_rslv,
-                                      sum(case when issuetype = 1 and s_statusxx = 'P' then 1 else 0 end) as issuetype1_open,
-                                      sum(case when issuetype = 2 and s_statusxx = 'C' then 1 else 0 end) as issuetype2_rslv,
-                                      sum(case when issuetype = 2 and s_statusxx = 'P' then 1 else 0 end) as issuetype2_open,
-                                      sum(case when issuetype = 3 and s_statusxx = 'C' then 1 else 0 end) as issuetype3_rslv,
-                                      sum(case when issuetype = 3 and s_statusxx = 'P' then 1 else 0 end) as issuetype3_open,
-                                      sum(case when issuetype = 4 and s_statusxx = 'C' then 1 else 0 end) as issuetype4_rslv,
-                                      sum(case when issuetype = 4 and s_statusxx = 'P' then 1 else 0 end) as issuetype4_open
-                                    FROM tickets
-                                    INNER JOIN users on users.loginname = tickets.s_assignto
-                                    WHERE tickets.created_at between :datefrom and :datethru
-                                    group by s_assignto, name;
+    $date1 = substr($repdatefrom,6,4).substr($repdatefrom,0,2).substr($repdatefrom,3,2);
+    $date2 = substr($repdatethru,6,4).substr($repdatethru,0,2).substr($repdatethru,3,2);
 
-                                      "), array('datefrom' => $date1, 'datethru' => $date2));
+    $repdata = DB::select('call byassigntoissuerep(?,?)',array($date1,$date2));
 
-    return view('reports.summaryByAssignToIssueRep', compact('repdata','repdatefrom','repdatethru'));
+    $issuetypes = issuetype::all();
+
+    // $repdata = DB::select(DB::raw("select s_assignto, name, count(*) as totalcnt,
+    //                                   sum(case when issuetype = 1 and s_statusxx = 'C' then 1 else 0 end) as issuetype1_rslv,
+    //                                   sum(case when issuetype = 1 and s_statusxx = 'P' then 1 else 0 end) as issuetype1_open,
+    //                                   sum(case when issuetype = 2 and s_statusxx = 'C' then 1 else 0 end) as issuetype2_rslv,
+    //                                   sum(case when issuetype = 2 and s_statusxx = 'P' then 1 else 0 end) as issuetype2_open,
+    //                                   sum(case when issuetype = 3 and s_statusxx = 'C' then 1 else 0 end) as issuetype3_rslv,
+    //                                   sum(case when issuetype = 3 and s_statusxx = 'P' then 1 else 0 end) as issuetype3_open,
+    //                                   sum(case when issuetype = 4 and s_statusxx = 'C' then 1 else 0 end) as issuetype4_rslv,
+    //                                   sum(case when issuetype = 4 and s_statusxx = 'P' then 1 else 0 end) as issuetype4_open
+    //                                 FROM tickets
+    //                                 INNER JOIN users on users.loginname = tickets.s_assignto
+    //                                 WHERE tickets.created_at between :datefrom and :datethru
+    //                                 group by s_assignto, name;
+    //
+    //                                   "), array('datefrom' => $date1, 'datethru' => $date2));
+
+    return view('reports.summaryByAssignToIssueRep', compact('repdata', 'issuetypes','repdatefrom','repdatethru'));
 
   }
 
@@ -337,6 +350,8 @@ class ReportsController extends Controller
     $repdatefrom = $date1;
     $repdatethru = $date2;
 
+    $repTypeDesc = " Per Assigned To ";
+
     switch ($reptype){
       case 1:
         $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -348,6 +363,7 @@ class ReportsController extends Controller
                                     AND tickets.s_assignto = :assignto;
                                     "),
                                     array('datefrom' => $date1, 'datethru' => $date2, 'assignto' => $s_assignto));
+        $reptitle = 'Total Tickets of ' . $s_assigntoname;
         break;
       case 2:
           $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -361,6 +377,7 @@ class ReportsController extends Controller
                                     AND tickets.issuetype = :issuetype;
                                     "),
                                     array('datefrom' => $date1, 'datethru' => $date2, 'assignto' => $s_assignto, 'issuetype' => $s_issuetype));
+          $reptitle = 'Closed Tickets of ' . $s_assigntoname;
           break;
         case 3:
             $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -374,9 +391,10 @@ class ReportsController extends Controller
                                       AND tickets.issuetype = :issuetype;
                                       "),
                                       array('datefrom' => $date1, 'datethru' => $date2, 'assignto' => $s_assignto, 'issuetype' => $s_issuetype));
+            $reptitle = 'Open Tickets of ' . $s_assigntoname;
             break;
     }
-    return view('reports/summaryByAssigntoDetail',compact('repdata', 's_assigntoname','repdatefrom','repdatethru'));
+    return view('reports/summaryByReportWithIssueRepDetail',compact('repdata', 's_assigntoname','repdatefrom','repdatethru','reptitle','repTypeDesc'));
   }
 
   // COUNT BY REPORTED BY
@@ -452,26 +470,33 @@ class ReportsController extends Controller
     $repdatefrom = $request->input('datefrom');
     $repdatethru = $request->input('datethru');
 
-    $date1 = Carbon::parse($request->input('datefrom'));
-    $date2 = Carbon::parse($request->input('datethru'));
+    // $date1 = Carbon::parse($request->input('datefrom'));
+    // $date2 = Carbon::parse($request->input('datethru'));
 
-    $repdata = DB::select(DB::raw("select s_reportby, name, count(*) as totalcnt,
-                                      sum(case when issuetype = 1 and s_statusxx = 'C' then 1 else 0 end) as issuetype1_rslv,
-                                      sum(case when issuetype = 1 and s_statusxx = 'P' then 1 else 0 end) as issuetype1_open,
-                                      sum(case when issuetype = 2 and s_statusxx = 'C' then 1 else 0 end) as issuetype2_rslv,
-                                      sum(case when issuetype = 2 and s_statusxx = 'P' then 1 else 0 end) as issuetype2_open,
-                                      sum(case when issuetype = 3 and s_statusxx = 'C' then 1 else 0 end) as issuetype3_rslv,
-                                      sum(case when issuetype = 3 and s_statusxx = 'P' then 1 else 0 end) as issuetype3_open,
-                                      sum(case when issuetype = 4 and s_statusxx = 'C' then 1 else 0 end) as issuetype4_rslv,
-                                      sum(case when issuetype = 4 and s_statusxx = 'P' then 1 else 0 end) as issuetype4_open
-                                    FROM tickets
-                                    INNER JOIN users on users.loginname = tickets.s_reportby
-                                    WHERE tickets.created_at between :datefrom and :datethru
-                                    group by s_reportby, name;
+    $date1 = substr($repdatefrom,6,4).substr($repdatefrom,0,2).substr($repdatefrom,3,2);
+    $date2 = substr($repdatethru,6,4).substr($repdatethru,0,2).substr($repdatethru,3,2);
 
-                                      "), array('datefrom' => $date1, 'datethru' => $date2));
+    $repdata = DB::select('call byreportbyissuerep(?,?)',array($date1,$date2));
 
-    return view('reports.summaryByReportByIssueRep', compact('repdata','repdatefrom','repdatethru'));
+    $issuetypes = issuetype::all();
+
+    // $repdata = DB::select(DB::raw("select s_reportby, name, count(*) as totalcnt,
+    //                                   sum(case when issuetype = 1 and s_statusxx = 'C' then 1 else 0 end) as issuetype1_rslv,
+    //                                   sum(case when issuetype = 1 and s_statusxx = 'P' then 1 else 0 end) as issuetype1_open,
+    //                                   sum(case when issuetype = 2 and s_statusxx = 'C' then 1 else 0 end) as issuetype2_rslv,
+    //                                   sum(case when issuetype = 2 and s_statusxx = 'P' then 1 else 0 end) as issuetype2_open,
+    //                                   sum(case when issuetype = 3 and s_statusxx = 'C' then 1 else 0 end) as issuetype3_rslv,
+    //                                   sum(case when issuetype = 3 and s_statusxx = 'P' then 1 else 0 end) as issuetype3_open,
+    //                                   sum(case when issuetype = 4 and s_statusxx = 'C' then 1 else 0 end) as issuetype4_rslv,
+    //                                   sum(case when issuetype = 4 and s_statusxx = 'P' then 1 else 0 end) as issuetype4_open
+    //                                 FROM tickets
+    //                                 INNER JOIN users on users.loginname = tickets.s_reportby
+    //                                 WHERE tickets.created_at between :datefrom and :datethru
+    //                                 group by s_reportby, name;
+    //
+    //                                   "), array('datefrom' => $date1, 'datethru' => $date2));
+
+    return view('reports.summaryByReportByIssueRep', compact('repdata', 'issuetypes','repdatefrom','repdatethru'));
   }
 
   // COUNT BY REPORTED BY AND ISSUE REPORTED - DETAIL
@@ -484,6 +509,8 @@ class ReportsController extends Controller
     $repdatefrom = $date1;
     $repdatethru = $date2;
 
+    $repTypeDesc = " Per Reported By ";
+
     switch ($reptype){
       case 1:
         $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -495,6 +522,7 @@ class ReportsController extends Controller
                                     AND tickets.s_reportby = :reportby;
                                     "),
                                     array('datefrom' => $date1, 'datethru' => $date2, 'reportby' => $s_reportby));
+        $reptitle = 'Total Tickets of ' . $s_reportbyname;
         break;
       case 2:
           $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -508,6 +536,7 @@ class ReportsController extends Controller
                                     AND tickets.issuetype = :issuetype;
                                     "),
                                     array('datefrom' => $date1, 'datethru' => $date2, 'reportby' => $s_reportby, 'issuetype' => $s_issuetype));
+          $reptitle = 'Closed Tickets of ' . $s_reportbyname;
           break;
         case 3:
             $repdata = DB::select(DB::raw("select tickets.*, branches.s_brncname, issuetypes.issuetype_desc, users.name
@@ -521,9 +550,10 @@ class ReportsController extends Controller
                                       AND tickets.issuetype = :issuetype;
                                       "),
                                       array('datefrom' => $date1, 'datethru' => $date2, 'reportby' => $s_reportby, 'issuetype' => $s_issuetype));
+            $reptitle = 'Open Tickets of ' . $s_reportbyname;
             break;
     }
-    return view('reports/summaryByReportByDetail',compact('repdata', 's_reportbyname','repdatefrom','repdatethru'));
+    return view('reports/summaryByReportWithIssueRepDetail',compact('repdata', 's_reportbyname','repdatefrom','repdatethru','reptitle','repTypeDesc'));
   }
 
   public function getNewTicketsDaily(Request $request)
@@ -689,6 +719,33 @@ class ReportsController extends Controller
            });
       });
     })->export('xlsx');
+  }
+
+  public function averagesupportratings()
+  {
+    $repdata = DB::select(DB::raw("select users.name, ratings.s_assignto, avg(rating) as avgrate, count(*) as ticketcnt
+                                  from ratings
+                                  	inner join users on users.loginname = ratings.s_assignto
+                                   group by users.name, s_assignto
+                                   order by avgrate desc;
+                                "));
+
+    return view('reports.avgratings', compact('repdata'));
+  }
+
+  public function avgratingsdetails($assignto, $assigntoname)
+  {
+    $assigname = $assigntoname;
+    $repdata = DB::select(DB::raw("select users.name, rating, concat(tickets.s_brnccode,tickets.s_trannmbr) as ticketno,
+                                    		tickets.issuesubject, tickets.m_resodesc, users1.name as ratedby
+                                     from ratings
+                                    	inner join tickets on tickets.id = ratings.rateable_id
+                                    	inner join users on users.loginname = ratings.s_assignto
+                                        inner join users as users1 on users1.id = user_id
+                                    where ratings.s_assignto = :assignto;
+                                "), array('assignto' => $assignto));
+
+  return view('reports.avgratingsdetail', compact('repdata','assigname'));
   }
 
   public function branches()

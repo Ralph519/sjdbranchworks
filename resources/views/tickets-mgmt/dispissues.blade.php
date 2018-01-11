@@ -48,7 +48,7 @@
                             @else
                               <td><a href="{{ route('ticket-management.show', ['id' => $issue->id]) }}">{{$issue->s_brnccode.$issue->s_trannmbr}}</a></td>
                             @endif
-                            <td>{{$issue->branch->first()->s_brncname}}</td>
+                            <td>{{$issue->s_brnccode.' - '.$issue->branch->first()->s_brncname}}</td>
                             <td>{{$issue->issuesubject}}</td>
                             <td>
                               @if($issue->s_statusxx=='P')

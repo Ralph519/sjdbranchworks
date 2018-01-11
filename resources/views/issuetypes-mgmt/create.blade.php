@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('headtitle')
-  <a class="navbar-brand" href="#"> Add New Issues Reported by branches </a>
+  <a class="navbar-brand" href="#"> Add New Issue Type </a>
 @endsection
 @section('content')
 <div class="content">
@@ -16,8 +16,8 @@
                   </div>
                   <div class="cardsmall-content">
 
-                      <h4 class="title">New Issues Reported -
-                        <small class="category">add new issues reported</small>
+                      <h4 class="title">New Issue Type -
+                        <small class="category">add new issue type</small>
                       </h4>
 
                       @if(count($errors) > 0)
@@ -40,9 +40,11 @@
 
 
                           <div class="row">
-                              <button type="submit" class="btn btn-primary pull-right">Save new Branch</button>
+                            <div class="col-md-12 pull-right">
+                              <button type="submit" class="btn btn-primary pull-right">Save new Issue Type</button>
                               <div class="clearfix"></div>
                               {{csrf_field()}}
+                            </div>
                           </div>
                         </form>
                   </div>

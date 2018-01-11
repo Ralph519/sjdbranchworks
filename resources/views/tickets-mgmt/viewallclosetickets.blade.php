@@ -44,10 +44,10 @@
                         <tr>
                             <td>{{$closeticket->id}}</td>
                             <td><a href="{{ route('ticket-management.show', ['id' => $closeticket->id]) }}">{{$closeticket->s_brnccode.$closeticket->s_trannmbr}}</a></td>
-                            <td>{{$closeticket->branch->first()->s_brncname}}</td>
+                            <td>{{$closeticket->s_brnccode.' - '.$closeticket->branch->first()->s_brncname}}</td>
                             <td>{{$closeticket->issuesubject}}</td>
                             <td>{{$closeticket->ticketissues->first()->issuetype_desc}}</td>
-                            <td>{{ $closeticket->s_assignto }}</td>
+                            <td>{{ $closeticket->user->name }}</td>
                             <td>{{ $closeticket->updated_at }}</td>
                         </tr>
                         @endforeach
@@ -64,32 +64,6 @@
 @section('pagescripts')
 <link href="{{ asset("/css/jquery.dataTables.css")}}" rel="stylesheet" />
 <script src="{{ asset("/js/jquery.datatables.js")}}"></script>
-
-<script>
-    document.querySelector('#deleteuser').addEventListener('submit', function(e) {
-        var form = this;
-        e.preventDefault();
-        swal({
-              title: "Are you sure?",
-              text: "Employee information will be permanently deleted",
-              type: "warning",
-              showCancelButton: true,
-              confirmButtonColor: '#DD6B55',
-              confirmButtonText: 'Yes, I am sure!',
-              cancelButtonText: "No, cancel it!",
-              closeOnConfirm: true,
-              closeOnCancel: false,
-          },
-          function(isConfirm) {
-              if (isConfirm) {
-                form.submit();
-              } else {
-                  swal("Cancelled", "", "error");
-              }
-          });
-    });
-
-</script>
 
 <script>
 $(document).ready(function() {

@@ -57,9 +57,11 @@
                           </div>
 
                           <div class="row">
+                            <div class="col-md-12 pull-right">
                               <button type="submit" class="btn btn-primary pull-right">Save new Branch</button>
                               <div class="clearfix"></div>
                               {{csrf_field()}}
+                            </div>
                           </div>
                         </form>
                   </div>

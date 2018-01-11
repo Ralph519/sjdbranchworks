@@ -123,7 +123,7 @@
                                  <td>{{$openticket10->id}}</td>
                                  <td><a href="{{ route('ticket-management.edit', ['id' => $openticket10->id]) }}">{{$openticket10->s_brnccode.$openticket10->s_trannmbr}}</a></td>
                                  <td>{{$openticket10->issuesubject}}</td>
-                                 <td>{{$openticket10->s_assignto}}</td>
+                                 <td>{{$openticket10->user->name}}</td>
                                  <td>{{ $openticket10->created_at->diffForHumans() }}</td>
                              </tr>
                              @endforeach
@@ -153,7 +153,7 @@
                                   <td>{{$closedticket10->id}}</td>
                                   <td><a href="{{ route('ticket-management.show', ['id' => $closedticket10->id]) }}">{{$closedticket10->s_brnccode.$closedticket10->s_trannmbr}}</a></td>
                                   <td>{{$closedticket10->issuesubject}}</td>
-                                  <td>{{$closedticket10->s_assignto}}</td>
+                                  <td>{{$closedticket10->user->name}}</td>
                                   <td>{{$closedticket10->d_rslvdate}}</td>
                               </tr>
                               @endforeach

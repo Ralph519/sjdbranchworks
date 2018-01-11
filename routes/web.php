@@ -87,6 +87,18 @@ Route::get('reports.summaryByAssignedtoDetail/{assignto}/{assigntoname}/{date1}/
   'middleware' => ['auth','isAdmin']
 ]);
 
+Route::any('reports/summarybyassignedtoissuereported', [
+  'uses' => 'ReportsController@summarybyassignedtoissuereported',
+  'as' => 'summarybyassignedtoissuereported',
+  'middleware' => ['auth','isAdmin']
+]);
+
+Route::get('reports.summaryByAssignedtoIssueRepDetail/{assignto}/{assigntoname}/{date1}/{date2}/{reptype}/{issuetype}', [
+  'uses' => 'ReportsController@summaryByAssignedtoIssueRepDetail',
+  'as' => 'summaryByAssignedtoIssueRepDetail',
+  'middleware' => ['auth','isAdmin']
+]);
+
 Route::any('reports/summarybyreportby', [
   'uses' => 'ReportsController@summarybyreportby',
   'as' => 'summarybyreportby',
@@ -108,18 +120,6 @@ Route::any('reports/summarybyreportbyissuerep', [
 Route::get('reports.summarybyreportbyissuerepdetail/{s_reportbyname}/{reportbyname}/{date1}/{date2}/{reptype}/{issuetype}', [
   'uses' => 'ReportsController@summarybyreportbyissuerepdetail',
   'as' => 'summarybyreportbyissuerepdetail',
-  'middleware' => ['auth','isAdmin']
-]);
-
-Route::any('reports/summarybyassignedtoissuereported', [
-  'uses' => 'ReportsController@summarybyassignedtoissuereported',
-  'as' => 'summarybyassignedtoissuereported',
-  'middleware' => ['auth','isAdmin']
-]);
-
-Route::get('reports.summaryByAssignedtoIssueRepDetail/{assignto}/{assigntoname}/{date1}/{date2}/{reptype}/{issuetype}', [
-  'uses' => 'ReportsController@summaryByAssignedtoIssueRepDetail',
-  'as' => 'summaryByAssignedtoIssueRepDetail',
   'middleware' => ['auth','isAdmin']
 ]);
 
@@ -157,6 +157,18 @@ Route::get('reports/averageresolvetime', [
   'uses' => 'ReportsController@getAvgResolveTime',
   'middleware' => ['auth','isAdmin'],
   'as' => 'averageresolvetime'
+]);
+
+Route::get('reports/avgratings',[
+    'uses' => 'ReportsController@averagesupportratings',
+    'middleware' => ['auth','isAdmin'],
+    'as' => 'avgratings'
+]);
+
+Route::get('reports/avgratingsdetails/{assignto}/{assigntoname}',[
+    'uses' => 'ReportsController@avgratingsdetails',
+    'middleware' => ['auth','isAdmin'],
+    'as' => 'avgratingsdetails'
 ]);
 
 Route::get('reports/branches',[
@@ -207,6 +219,7 @@ Route::get('ticket-management/viewallclosetickets','TicketsManagementController@
 Route::get('ticket-management/managetickets','TicketsManagementController@managetickets')->name('ticket-management.managetickets')->middleware(['auth']);
 Route::get('ticket-management/assigntickets/{id}','TicketsManagementController@assigntickets')->name('ticket-management.assigntickets')->middleware(['auth']);
 Route::put('ticket-management/saveassigned', 'TicketsManagementController@saveassigned')->name('ticket-management.saveassigned')->middleware(['auth']);
+Route::put('ticket-management/saveRatings', 'TicketsManagementController@saveRatings')->name('ticket-management.saveRatings')->middleware(['auth']);
 Route::get('ticket-management/notificationview/{ticketid}','TicketsManagementController@notificationview')->name('ticket-management.notificationview')->middleware(['auth']);
 Route::group(['middleware' => 'auth'],function(){
   Route::resource('ticket-management', 'TicketsManagementController');

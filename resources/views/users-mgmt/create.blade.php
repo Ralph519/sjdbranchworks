@@ -127,9 +127,11 @@
                           </div>
 
                           <div class="row">
+                            <div class="col-md12 pull-right">
                               <button type="submit" class="btn btn-primary pull-right">Save New user</button>
                               <div class="clearfix"></div>
                               {{csrf_field()}}
+                            </div>
                           </div>
                         </form>
                       <!-- @foreach ($employees as $employee)
